@@ -11,9 +11,6 @@ const $nameTasks = document.createElement("span");
 $nameTasks.classList.add("nameTasks");
 $nameTasks.textContent = "Tasks";
 
-$headerWrapper.appendChild($logoTasks);
-$headerWrapper.appendChild($nameTasks);
-
 const $addTaskWrapper = document.createElement("div");
 $addTaskWrapper.classList.add("addTaskWrapper");
 
@@ -25,110 +22,164 @@ const $buttonAdd = document.createElement("button");
 $buttonAdd.classList.add("buttonAdd");
 $buttonAdd.textContent = `ADD`;
 
+const $noTaskWrapper = document.createElement("div");
+$noTaskWrapper.classList.add("noTaskWrapper");
+
+const $noTaskTitle = document.createElement("h2");
+$noTaskTitle.classList.add("noTaskTitle");
+$noTaskTitle.textContent = `Todas as Tarefas`;
+
+const $noTaskImage = document.createElement("img");
+$noTaskImage.classList.add("noTaskImage");
+$noTaskImage.setAttribute("src", "./images/undraw_to_do.svg");
+
+const $noTaskNoneTxt = document.createElement("span");
+$noTaskNoneTxt.classList.add("noTaskNoneTxt");
+$noTaskNoneTxt.textContent = `Não há tarefas cadastradas ainda`;
+
+const $buttonRegisterTask = document.createElement("button");
+$buttonRegisterTask.classList.add("buttonRegisterTask");
+$buttonRegisterTask.textContent = `Cadastrar uma tarefa agora`;
+
+const $withTaskWrapper = document.createElement("div");
+$withTaskWrapper.classList.add("withTaskWrapper");
+
+const $completedTasksWrapper = document.createElement("div");
+$completedTasksWrapper.classList.add("completedTasksWrapper");
+
+const $completedWrapper = document.createElement("div");
+$completedWrapper.classList.add("completedWrapper");
+
+const $completedTitle = document.createElement("h2");
+$completedTitle.classList.add("completedTitle");
+$completedTitle.textContent = `Concluídas`;
+
+const $completedNumber = document.createElement("span");
+$completedNumber.classList.add("completedNumber");
+
+const $completedEvolutionExternal = document.createElement("div");
+$completedEvolutionExternal.classList.add("completedEvolutionExternal");
+
+const $completedEvolutionInternal = document.createElement("div");
+$completedEvolutionInternal.classList.add("completedEvolutionInternal");
+
+const $taskTitle = document.createElement("h2");
+$taskTitle.classList.add("taskTitle");
+$taskTitle.textContent = `Todas as Tarefas`;
+
+const $tasksListWrapper = document.createElement("div");
+$tasksListWrapper.classList.add("tasksListWrapper");
+
+$main.appendChild($headerWrapper);
+$main.appendChild($addTaskWrapper);
+$headerWrapper.appendChild($logoTasks);
+$headerWrapper.appendChild($nameTasks);
 $addTaskWrapper.appendChild($addTask);
 $addTaskWrapper.appendChild($buttonAdd);
 
-const noTasksAdded = () => {
-  const $noTaskWrapper = document.createElement("div");
-  $noTaskWrapper.classList.add("noTaskWrapper");
+let totalTasksAdd = 0;
+let totalTasksCompleted = 0;
 
-  const $noTaskTitle = document.createElement("h2");
-  $noTaskTitle.classList.add("noTaskTitle");
-  $noTaskTitle.textContent = `Todas as Tarefas`;
-
-  const $noTaskImage = document.createElement("img");
-  $noTaskImage.classList.add("noTaskImage");
-  $noTaskImage.setAttribute("src", "./images/undraw_to_do.svg");
-
-  const $noTaskNoneTxt = document.createElement("span");
-  $noTaskNoneTxt.classList.add("noTaskNoneTxt");
-  $noTaskNoneTxt.textContent = `Não há tarefas cadastradas ainda`;
-
-  $noTaskWrapper.appendChild($noTaskTitle);
-  $noTaskWrapper.appendChild($noTaskImage);
-  $noTaskWrapper.appendChild($noTaskNoneTxt);
-
-  const $buttonRegisterTask = document.createElement("button");
-  $buttonRegisterTask.classList.add("buttonRegisterTask");
-  $buttonRegisterTask.textContent = `Cadastrar uma tarefa agora`;
-
-  $main.appendChild($noTaskWrapper);
-  $main.appendChild($buttonRegisterTask);
+const noTasksAdded = (status) => {
+  if (status) {
+    $noTaskWrapper.appendChild($noTaskTitle);
+    $noTaskWrapper.appendChild($noTaskImage);
+    $noTaskWrapper.appendChild($noTaskNoneTxt);
+    $main.appendChild($noTaskWrapper);
+    $main.appendChild($buttonRegisterTask);
+  }
+  if (status === false) {
+    $noTaskWrapper.remove();
+    $buttonRegisterTask.remove();
+  }
 };
 
-const withTasksAdded = () => {
-  const $withTaskWrapper = document.createElement("div");
-  $withTaskWrapper.classList.add("withTaskWrapper");
+const resetForFinishingTasks = () => {
+  $withTaskWrapper.remove();
+  noTasksAdded(true);
+};
 
-  const $completedTasksWrapper = document.createElement("div");
-  $completedTasksWrapper.classList.add("completedTasksWrapper");
-
-  const $completedWrapper = document.createElement("div");
-  $completedWrapper.classList.add("completedWrapper");
-
-  const $completedTitle = document.createElement("h2");
-  $completedTitle.classList.add("completedTitle");
-  $completedTitle.textContent = `Concluídas`;
-
-  const $completedNumber = document.createElement("span");
-  $completedNumber.classList.add("completedNumber");
-  $completedNumber.textContent = `2/4`;
-
-  const $completedEvolutionExternal = document.createElement("div");
-  $completedEvolutionExternal.classList.add("completedEvolutionExternal");
-
-  const $completedEvolutionInternal = document.createElement("div");
-  $completedEvolutionInternal.classList.add("completedEvolutionInternal");
-
+const printCompletedTasks = () => {
+  $main.appendChild($withTaskWrapper);
   $withTaskWrapper.appendChild($completedTasksWrapper);
+  $withTaskWrapper.appendChild($taskTitle);
   $completedTasksWrapper.appendChild($completedWrapper);
   $completedWrapper.appendChild($completedTitle);
-  $completedWrapper.appendChild($completedNumber);
   $completedTasksWrapper.appendChild($completedEvolutionExternal);
   $completedEvolutionExternal.appendChild($completedEvolutionInternal);
+};
 
+const relationOfTasks = (completedTasks, totalTasks) => {
+  $completedNumber.textContent = `${completedTasks}/${totalTasks}`;
+  $completedWrapper.appendChild($completedNumber);
+};
+
+const printTask = () => {
   const $tasksWrapper = document.createElement("div");
   $tasksWrapper.classList.add("tasksWrapper");
-
-  const $taskTitle = document.createElement("h2");
-  $taskTitle.classList.add("taskTitle");
-  $taskTitle.textContent = `Todas as Tarefas`;
-
-  const $tasksAddWrapper = document.createElement("div");
-  $tasksAddWrapper.classList.add("tasksAddWrapper");
-
-  const $taskAdd = document.createElement("div");
-  $taskAdd.classList.add("taskAdd");
 
   const $taskNameWrapper = document.createElement("div");
   $taskNameWrapper.classList.add("taskNameWrapper");
 
+  const $taskName = document.createElement("span");
+  $taskName.classList.add("taskName");
+  $taskName.textContent = $addTask.value;
+
+  const $checkIcon = document.createElement("img");
+  $checkIcon.setAttribute("src", "./images/done-filled.svg");
+  $checkIcon.classList.add("checkIcon");
+  $checkIcon.addEventListener("click", () => {
+    $checkIcon.remove();
+    totalTasksCompleted--;
+    relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    $tasksWrapper.appendChild($buttonTaskChecked);
+  });
+
+  const $buttonTaskChecked = document.createElement("button");
+  $buttonTaskChecked.classList.add("buttonTaskChecked");
+  $buttonTaskChecked.addEventListener("click", () => {
+    $buttonTaskChecked.remove();
+    totalTasksCompleted++;
+    relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    $tasksWrapper.appendChild($checkIcon);
+  });
+
   const $deleteIcon = document.createElement("img");
   $deleteIcon.classList.add("deleteIcon");
   $deleteIcon.setAttribute("src", "./images/delete-filled.svg");
+  $deleteIcon.addEventListener("click", () => {
+    const check = $tasksWrapper.querySelector(".checkIcon");
+    if (check) totalTasksCompleted--;
+    $tasksWrapper.remove();
+    totalTasksAdd--;
+    relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    if ($tasksListWrapper.textContent === "") resetForFinishingTasks();
+  });
 
-  const $taskName = document.createElement("span");
-  $taskName.classList.add("taskName");
-  $taskName.textContent = `Tarefa 01`;
-
-  const $taskChecked = document.createElement("img");
-  $taskChecked.classList.add("taskChecked");
-  $taskChecked.setAttribute("src", "./images/done-filled.svg");
-
-  $withTaskWrapper.appendChild($tasksWrapper);
-  $tasksWrapper.appendChild($taskTitle);
-  $tasksWrapper.appendChild($tasksAddWrapper);
-  $tasksAddWrapper.appendChild($taskAdd);
-  $taskAdd.appendChild($taskNameWrapper);
+  $main.appendChild($tasksListWrapper);
+  $tasksListWrapper.appendChild($tasksWrapper);
+  $tasksWrapper.appendChild($taskNameWrapper);
   $taskNameWrapper.appendChild($deleteIcon);
   $taskNameWrapper.appendChild($taskName);
-  $taskAdd.appendChild($taskChecked);
-
-  $main.appendChild($withTaskWrapper);
+  $tasksWrapper.appendChild($buttonTaskChecked);
 };
 
-$main.appendChild($headerWrapper);
-$main.appendChild($addTaskWrapper);
+const addTask = () => {
+  if ($addTask.value.trim() === "") return ($addTask.value = "");
+  if ($addTask.value) {
+    totalTasksAdd++;
+    noTasksAdded(false);
+    printCompletedTasks();
+    relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    printTask();
+    $addTask.value = "";
+    $addTask.focus();
+  }
+};
 
-// noTasksAdded();
-withTasksAdded();
+$buttonAdd.addEventListener("click", addTask);
+$buttonRegisterTask.addEventListener("click", () => {
+  $addTask.focus();
+});
+
+noTasksAdded(true);
