@@ -17,6 +17,7 @@ $addTaskWrapper.classList.add("addTaskWrapper");
 const $addTask = document.createElement("input");
 $addTask.classList.add("addTask");
 $addTask.placeholder = `Digite uma tarefa`;
+$addTask.maxLength = "60";
 
 const $buttonAdd = document.createElement("button");
 $buttonAdd.classList.add("buttonAdd");
@@ -132,6 +133,7 @@ const printTask = () => {
     $checkIcon.remove();
     totalTasksCompleted--;
     relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    printPorcentageCompleted();
     $tasksWrapper.appendChild($buttonTaskChecked);
   });
 
@@ -141,6 +143,7 @@ const printTask = () => {
     $buttonTaskChecked.remove();
     totalTasksCompleted++;
     relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    printPorcentageCompleted();
     $tasksWrapper.appendChild($checkIcon);
   });
 
@@ -153,6 +156,7 @@ const printTask = () => {
     $tasksWrapper.remove();
     totalTasksAdd--;
     relationOfTasks(totalTasksCompleted, totalTasksAdd);
+    printPorcentageCompleted();
     if ($tasksListWrapper.textContent === "") resetForFinishingTasks();
   });
 
@@ -172,9 +176,15 @@ const addTask = () => {
     printCompletedTasks();
     relationOfTasks(totalTasksCompleted, totalTasksAdd);
     printTask();
+    printPorcentageCompleted();
     $addTask.value = "";
     $addTask.focus();
   }
+};
+
+const printPorcentageCompleted = () => {
+  const calcPorcentage = (totalTasksCompleted * 100) / totalTasksAdd;
+  $completedEvolutionInternal.style.width = `${calcPorcentage}%`;
 };
 
 $buttonAdd.addEventListener("click", addTask);

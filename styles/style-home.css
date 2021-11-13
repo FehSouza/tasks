@@ -125,7 +125,7 @@ body {
 }
 
 .completedEvolutionInternal {
-  width: 50%;
+  width: 0;
   height: 8px;
   background-color: #236fe2;
   border: 1px solid #202226;
@@ -163,8 +163,12 @@ body {
 }
 
 .taskName {
+  max-width: 78%;
   font-weight: 300;
   margin-left: 15px;
+  text-align: justify;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .buttonTaskChecked {
