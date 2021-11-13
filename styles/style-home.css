@@ -130,6 +130,7 @@ body {
   background-color: #236fe2;
   border: 1px solid #202226;
   border-radius: 49px;
+  transition-duration: 300ms;
   box-sizing: border-box;
 }
 
