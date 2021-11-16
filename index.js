@@ -64,132 +64,123 @@ $completedEvolutionExternal.classList.add("completedEvolutionExternal");
 const $completedEvolutionInternal = document.createElement("div");
 $completedEvolutionInternal.classList.add("completedEvolutionInternal");
 
+const $container = document.createElement("div");
+$container.classList.add("container");
+
+const $content = document.createElement("section");
+$content.classList.add("content");
+
 const $taskTitle = document.createElement("h2");
 $taskTitle.classList.add("taskTitle");
 $taskTitle.textContent = `Todas as Tarefas`;
 
-const $tasksListWrapper = document.createElement("div");
+const $tasksListWrapper = document.createElement("ul");
 $tasksListWrapper.classList.add("tasksListWrapper");
 
 $main.appendChild($headerWrapper);
 $main.appendChild($addTaskWrapper);
+$main.appendChild($container);
 $headerWrapper.appendChild($logoTasks);
 $headerWrapper.appendChild($nameTasks);
 $addTaskWrapper.appendChild($addTask);
 $addTaskWrapper.appendChild($buttonAdd);
+$container.appendChild($withTaskWrapper);
+$container.appendChild($content);
+$content.appendChild($taskTitle);
+$content.appendChild($tasksListWrapper);
 
-let totalTasksAdd = 0;
-let totalTasksCompleted = 0;
-
-const noTasksAdded = (status) => {
-  if (status) {
-    $noTaskWrapper.appendChild($noTaskTitle);
-    $noTaskWrapper.appendChild($noTaskImage);
-    $noTaskWrapper.appendChild($noTaskNoneTxt);
-    $main.appendChild($noTaskWrapper);
-    $main.appendChild($buttonRegisterTask);
-  }
-  if (status === false) {
-    $noTaskWrapper.remove();
-    $buttonRegisterTask.remove();
-  }
-};
-
-const resetForFinishingTasks = () => {
-  $withTaskWrapper.remove();
-  noTasksAdded(true);
-};
-
-const printCompletedTasks = () => {
-  $main.appendChild($withTaskWrapper);
-  $withTaskWrapper.appendChild($completedTasksWrapper);
-  $withTaskWrapper.appendChild($taskTitle);
-  $completedTasksWrapper.appendChild($completedWrapper);
-  $completedWrapper.appendChild($completedTitle);
-  $completedTasksWrapper.appendChild($completedEvolutionExternal);
-  $completedEvolutionExternal.appendChild($completedEvolutionInternal);
-};
-
-const relationOfTasks = (completedTasks, totalTasks) => {
-  $completedNumber.textContent = `${completedTasks}/${totalTasks}`;
-  $completedWrapper.appendChild($completedNumber);
-};
-
-const printTask = () => {
-  const $tasksWrapper = document.createElement("div");
-  $tasksWrapper.classList.add("tasksWrapper");
-
-  const $taskNameWrapper = document.createElement("div");
-  $taskNameWrapper.classList.add("taskNameWrapper");
-
-  const $taskName = document.createElement("span");
-  $taskName.classList.add("taskName");
-  $taskName.textContent = $addTask.value;
+const createCheckBox = () => {
+  const $checkBox = document.createElement("button");
+  $checkBox.classList.add("buttonTaskChecked");
+  $checkBox.addEventListener("click", () => $checkBox.remove());
 
   const $checkIcon = document.createElement("img");
   $checkIcon.setAttribute("src", "./images/done-filled.svg");
   $checkIcon.classList.add("checkIcon");
-  $checkIcon.addEventListener("click", () => {
-    $checkIcon.remove();
-    totalTasksCompleted--;
-    relationOfTasks(totalTasksCompleted, totalTasksAdd);
-    printPorcentageCompleted();
-    $tasksWrapper.appendChild($buttonTaskChecked);
-  });
+  $checkIcon.addEventListener("click", () => $checkIcon.remove());
 
-  const $buttonTaskChecked = document.createElement("button");
-  $buttonTaskChecked.classList.add("buttonTaskChecked");
-  $buttonTaskChecked.addEventListener("click", () => {
-    $buttonTaskChecked.remove();
-    totalTasksCompleted++;
-    relationOfTasks(totalTasksCompleted, totalTasksAdd);
-    printPorcentageCompleted();
-    $tasksWrapper.appendChild($checkIcon);
-  });
+  return $checkBox;
+};
 
+const createDeleteIcon = (action) => {
   const $deleteIcon = document.createElement("img");
-  $deleteIcon.classList.add("deleteIcon");
   $deleteIcon.setAttribute("src", "./images/delete-filled.svg");
-  $deleteIcon.addEventListener("click", () => {
-    const check = $tasksWrapper.querySelector(".checkIcon");
-    if (check) totalTasksCompleted--;
-    $tasksWrapper.remove();
-    totalTasksAdd--;
-    relationOfTasks(totalTasksCompleted, totalTasksAdd);
-    printPorcentageCompleted();
-    if ($tasksListWrapper.textContent === "") resetForFinishingTasks();
-  });
+  $deleteIcon.classList.add("deleteIcon");
+  $deleteIcon.addEventListener("click", action);
 
-  $main.appendChild($tasksListWrapper);
-  $tasksListWrapper.appendChild($tasksWrapper);
+  return $deleteIcon;
+};
+
+const createTask = (task, remove) => {
+  const $tasksWrapper = document.createElement("li");
+  $tasksWrapper.classList.add("tasksWrapper");
+  const $taskNameWrapper = document.createElement("div");
+  $taskNameWrapper.classList.add("taskNameWrapper");
+  const $taskName = document.createElement("span");
+  $taskName.classList.add("taskName");
+  $taskName.textContent = task;
+
+  const $checkBox = createCheckBox(() => console.log("check"));
+  const $deleteIcon = createDeleteIcon(remove);
+
   $tasksWrapper.appendChild($taskNameWrapper);
   $taskNameWrapper.appendChild($deleteIcon);
   $taskNameWrapper.appendChild($taskName);
-  $tasksWrapper.appendChild($buttonTaskChecked);
+  $tasksWrapper.appendChild($checkBox);
+
+  return $tasksWrapper;
 };
 
-const addTask = () => {
-  if ($addTask.value.trim() === "") return ($addTask.value = "");
-  if ($addTask.value) {
-    totalTasksAdd++;
-    noTasksAdded(false);
-    printCompletedTasks();
-    relationOfTasks(totalTasksCompleted, totalTasksAdd);
-    printTask();
-    printPorcentageCompleted();
-    $addTask.value = "";
-    $addTask.focus();
+const renderNoTasks = () => {
+  $noTaskWrapper.appendChild($noTaskTitle);
+  $noTaskWrapper.appendChild($noTaskImage);
+  $noTaskWrapper.appendChild($noTaskNoneTxt);
+  $main.appendChild($noTaskWrapper);
+  $main.appendChild($buttonRegisterTask);
+};
+
+const removeNoTasks = () => {
+  $noTaskWrapper.remove();
+  $buttonRegisterTask.remove();
+};
+
+const toggleTasks = (status) => {
+  if (status) renderNoTasks();
+  if (status === false) removeNoTasks();
+};
+
+let tasks = [];
+
+const addTask = (name, status) => {
+  tasks.push({ name: name, completed: status });
+};
+
+const removeTask = (position) => {
+  let newTasks = [];
+  for (const index in tasks) {
+    if (position !== index) newTasks.push(tasks[index]);
+  }
+  tasks = newTasks;
+};
+
+const handleRemoveTask = (position) => {
+  removeTask(position);
+  renderTasks();
+};
+
+const renderTasks = () => {
+  $tasksListWrapper.innerHTML = "";
+  for (const index in tasks) {
+    $tasksListWrapper.appendChild(
+      createTask(tasks[index].name, () => handleRemoveTask(index))
+    );
   }
 };
 
-const printPorcentageCompleted = () => {
-  const calcPorcentage = (totalTasksCompleted * 100) / totalTasksAdd;
-  $completedEvolutionInternal.style.width = `${calcPorcentage}%`;
+const handleAddTask = () => {
+  const nameTask = $addTask.value;
+  addTask(nameTask, false);
+  renderTasks();
 };
 
-$buttonAdd.addEventListener("click", addTask);
-$buttonRegisterTask.addEventListener("click", () => {
-  $addTask.focus();
-});
-
-noTasksAdded(true);
+$buttonAdd.addEventListener("click", handleAddTask);
