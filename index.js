@@ -1,81 +1,81 @@
-const $main = document.querySelector(".main");
+const $main = document.querySelector('.main');
 
-const $headerWrapper = document.createElement("div");
-$headerWrapper.classList.add("headerWrapper");
+const $headerWrapper = document.createElement('div');
+$headerWrapper.classList.add('headerWrapper');
 
-const $logoTasks = document.createElement("img");
-$logoTasks.classList.add("logoTasks");
-$logoTasks.setAttribute("src", "./images/grupo 1.svg");
+const $logoTasks = document.createElement('img');
+$logoTasks.classList.add('logoTasks');
+$logoTasks.setAttribute('src', './images/grupo 1.svg');
 
-const $nameTasks = document.createElement("span");
-$nameTasks.classList.add("nameTasks");
-$nameTasks.textContent = "Tasks";
+const $nameTasks = document.createElement('span');
+$nameTasks.classList.add('nameTasks');
+$nameTasks.textContent = 'Tasks';
 
-const $addTaskWrapper = document.createElement("div");
-$addTaskWrapper.classList.add("addTaskWrapper");
+const $addTaskWrapper = document.createElement('div');
+$addTaskWrapper.classList.add('addTaskWrapper');
 
-const $addTask = document.createElement("input");
-$addTask.classList.add("addTask");
+const $addTask = document.createElement('input');
+$addTask.classList.add('addTask');
 $addTask.placeholder = `Digite uma tarefa`;
-$addTask.maxLength = "60";
+$addTask.maxLength = '60';
 
-const $buttonAdd = document.createElement("button");
-$buttonAdd.classList.add("buttonAdd");
+const $buttonAdd = document.createElement('button');
+$buttonAdd.classList.add('buttonAdd');
 $buttonAdd.textContent = `ADD`;
 
-const $noTaskWrapper = document.createElement("div");
-$noTaskWrapper.classList.add("noTaskWrapper");
+const $noTaskWrapper = document.createElement('div');
+$noTaskWrapper.classList.add('noTaskWrapper');
 
-const $noTaskTitle = document.createElement("h2");
-$noTaskTitle.classList.add("noTaskTitle");
+const $noTaskTitle = document.createElement('h2');
+$noTaskTitle.classList.add('noTaskTitle');
 $noTaskTitle.textContent = `Todas as Tarefas`;
 
-const $noTaskImage = document.createElement("img");
-$noTaskImage.classList.add("noTaskImage");
-$noTaskImage.setAttribute("src", "./images/undraw_to_do.svg");
+const $noTaskImage = document.createElement('img');
+$noTaskImage.classList.add('noTaskImage');
+$noTaskImage.setAttribute('src', './images/undraw_to_do.svg');
 
-const $noTaskNoneTxt = document.createElement("span");
-$noTaskNoneTxt.classList.add("noTaskNoneTxt");
+const $noTaskNoneTxt = document.createElement('span');
+$noTaskNoneTxt.classList.add('noTaskNoneTxt');
 $noTaskNoneTxt.textContent = `Não há tarefas cadastradas ainda`;
 
-const $buttonRegisterTask = document.createElement("button");
-$buttonRegisterTask.classList.add("buttonRegisterTask");
+const $buttonRegisterTask = document.createElement('button');
+$buttonRegisterTask.classList.add('buttonRegisterTask');
 $buttonRegisterTask.textContent = `Cadastrar uma tarefa agora`;
 
-const $withTaskWrapper = document.createElement("div");
-$withTaskWrapper.classList.add("withTaskWrapper");
+const $withTaskWrapper = document.createElement('div');
+$withTaskWrapper.classList.add('withTaskWrapper');
 
-const $completedTasksWrapper = document.createElement("div");
-$completedTasksWrapper.classList.add("completedTasksWrapper");
+const $completedTasksWrapper = document.createElement('div');
+$completedTasksWrapper.classList.add('completedTasksWrapper');
 
-const $completedWrapper = document.createElement("div");
-$completedWrapper.classList.add("completedWrapper");
+const $completedWrapper = document.createElement('div');
+$completedWrapper.classList.add('completedWrapper');
 
-const $completedTitle = document.createElement("h2");
-$completedTitle.classList.add("completedTitle");
+const $completedTitle = document.createElement('h2');
+$completedTitle.classList.add('completedTitle');
 $completedTitle.textContent = `Concluídas`;
 
-const $completedNumber = document.createElement("span");
-$completedNumber.classList.add("completedNumber");
+const $completedNumber = document.createElement('span');
+$completedNumber.classList.add('completedNumber');
 
-const $completedEvolutionExternal = document.createElement("div");
-$completedEvolutionExternal.classList.add("completedEvolutionExternal");
+const $completedEvolutionExternal = document.createElement('div');
+$completedEvolutionExternal.classList.add('completedEvolutionExternal');
 
-const $completedEvolutionInternal = document.createElement("div");
-$completedEvolutionInternal.classList.add("completedEvolutionInternal");
+const $completedEvolutionInternal = document.createElement('div');
+$completedEvolutionInternal.classList.add('completedEvolutionInternal');
 
-const $container = document.createElement("div");
-$container.classList.add("container");
+const $container = document.createElement('div');
+$container.classList.add('container');
 
-const $content = document.createElement("section");
-$content.classList.add("content");
+const $content = document.createElement('section');
+$content.classList.add('content');
 
-const $taskTitle = document.createElement("h2");
-$taskTitle.classList.add("taskTitle");
+const $taskTitle = document.createElement('h2');
+$taskTitle.classList.add('taskTitle');
 $taskTitle.textContent = `Todas as Tarefas`;
 
-const $tasksListWrapper = document.createElement("ul");
-$tasksListWrapper.classList.add("tasksListWrapper");
+const $tasksListWrapper = document.createElement('ul');
+$tasksListWrapper.classList.add('tasksListWrapper');
 
 $main.appendChild($headerWrapper);
 $main.appendChild($addTaskWrapper);
@@ -89,44 +89,50 @@ $container.appendChild($content);
 $content.appendChild($taskTitle);
 $content.appendChild($tasksListWrapper);
 
-const createCheckBox = () => {
-  const $checkBox = document.createElement("button");
-  $checkBox.classList.add("checkBox");
-  $checkBox.addEventListener("click", () => $checkBox.remove());
-
-  const $checkIcon = document.createElement("img");
-  $checkIcon.setAttribute("src", "./images/done-filled.svg");
-  $checkIcon.classList.add("checkIcon");
-  $checkIcon.addEventListener("click", () => $checkIcon.remove());
+const createCheckBox = (toggleIcon) => {
+  const $checkBox = document.createElement('button');
+  $checkBox.classList.add('checkBox');
+  $checkBox.addEventListener('click', toggleIcon);
 
   return $checkBox;
 };
 
+const createCheckIcon = (toggleIcon) => {
+  const $checkIcon = document.createElement('img');
+  $checkIcon.setAttribute('src', './images/done-filled.svg');
+  $checkIcon.classList.add('checkIcon');
+  $checkIcon.addEventListener('click', toggleIcon);
+
+  return $checkIcon;
+};
+
 const createDeleteIcon = (actionRemove) => {
-  const $deleteIcon = document.createElement("img");
-  $deleteIcon.setAttribute("src", "./images/delete-filled.svg");
-  $deleteIcon.classList.add("deleteIcon");
-  $deleteIcon.addEventListener("click", actionRemove);
+  const $deleteIcon = document.createElement('img');
+  $deleteIcon.setAttribute('src', './images/delete-filled.svg');
+  $deleteIcon.classList.add('deleteIcon');
+  $deleteIcon.addEventListener('click', actionRemove);
 
   return $deleteIcon;
 };
 
-const createTask = (task, actionRemove) => {
-  const $tasksWrapper = document.createElement("li");
-  $tasksWrapper.classList.add("tasksWrapper");
-  const $taskNameWrapper = document.createElement("div");
-  $taskNameWrapper.classList.add("taskNameWrapper");
-  const $taskName = document.createElement("span");
-  $taskName.classList.add("taskName");
-  $taskName.textContent = task;
+const createTask = (task, actionRemove, toggle) => {
+  const $tasksWrapper = document.createElement('li');
+  $tasksWrapper.classList.add('tasksWrapper');
+  const $taskNameWrapper = document.createElement('div');
+  $taskNameWrapper.classList.add('taskNameWrapper');
+  const $taskName = document.createElement('span');
+  $taskName.classList.add('taskName');
+  $taskName.textContent = task.name;
 
   const $deleteIcon = createDeleteIcon(actionRemove);
-  const $checkBox = createCheckBox();
+  const $checkBox = createCheckBox(toggle);
+  const $checkIcon = createCheckIcon(toggle);
 
   $tasksWrapper.appendChild($taskNameWrapper);
   $taskNameWrapper.appendChild($deleteIcon);
   $taskNameWrapper.appendChild($taskName);
-  $tasksWrapper.appendChild($checkBox);
+  if (task.completed === false) $tasksWrapper.appendChild($checkBox);
+  if (task.completed) $tasksWrapper.appendChild($checkIcon);
 
   return $tasksWrapper;
 };
@@ -163,15 +169,31 @@ const removeTask = (position) => {
   tasks = newTasks;
 };
 
+const toggleTask = (position) => {
+  let newTasks = [];
+  for (const index in tasks) {
+    const isCompleted = tasks[index].completed;
+    const name = tasks[index].name;
+    if (position == index) newTasks.push({ name: name, completed: !isCompleted });
+    if (position != index) newTasks.push(tasks[index]);
+  }
+  tasks = newTasks;
+};
+
 const handleRemoveTask = (position) => {
   removeTask(position);
   renderTasks();
 };
 
+const handleToggleTask = (position) => {
+  toggleTask(position);
+  renderTasks();
+}
+
 const renderTasks = () => {
-  $tasksListWrapper.innerHTML = "";
+  $tasksListWrapper.innerHTML = '';
   for (const index in tasks) {
-    const $task = createTask(tasks[index].name, () => handleRemoveTask(index));
+    const $task = createTask(tasks[index], () => handleRemoveTask(index), () => handleToggleTask(index));
     $tasksListWrapper.appendChild($task);
   }
 };
@@ -182,4 +204,13 @@ const handleAddTask = () => {
   renderTasks();
 };
 
-$buttonAdd.addEventListener("click", handleAddTask);
+addTask('nameTask', false);
+addTask('nameTask', false);
+addTask('nameTask', true);
+addTask('nameTask', false);
+addTask('nameTask', false);
+console.log(tasks[0].completed);
+toggleTask();
+console.log(tasks);
+renderTasks()
+$buttonAdd.addEventListener('click', handleAddTask);
