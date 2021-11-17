@@ -91,7 +91,7 @@ $content.appendChild($tasksListWrapper);
 
 const createCheckBox = () => {
   const $checkBox = document.createElement("button");
-  $checkBox.classList.add("buttonTaskChecked");
+  $checkBox.classList.add("checkBox");
   $checkBox.addEventListener("click", () => $checkBox.remove());
 
   const $checkIcon = document.createElement("img");
@@ -102,16 +102,16 @@ const createCheckBox = () => {
   return $checkBox;
 };
 
-const createDeleteIcon = (action) => {
+const createDeleteIcon = (actionRemove) => {
   const $deleteIcon = document.createElement("img");
   $deleteIcon.setAttribute("src", "./images/delete-filled.svg");
   $deleteIcon.classList.add("deleteIcon");
-  $deleteIcon.addEventListener("click", action);
+  $deleteIcon.addEventListener("click", actionRemove);
 
   return $deleteIcon;
 };
 
-const createTask = (task, remove) => {
+const createTask = (task, actionRemove) => {
   const $tasksWrapper = document.createElement("li");
   $tasksWrapper.classList.add("tasksWrapper");
   const $taskNameWrapper = document.createElement("div");
@@ -120,8 +120,8 @@ const createTask = (task, remove) => {
   $taskName.classList.add("taskName");
   $taskName.textContent = task;
 
-  const $checkBox = createCheckBox(() => console.log("check"));
-  const $deleteIcon = createDeleteIcon(remove);
+  const $deleteIcon = createDeleteIcon(actionRemove);
+  const $checkBox = createCheckBox();
 
   $tasksWrapper.appendChild($taskNameWrapper);
   $taskNameWrapper.appendChild($deleteIcon);
@@ -144,7 +144,7 @@ const removeNoTasks = () => {
   $buttonRegisterTask.remove();
 };
 
-const toggleTasks = (status) => {
+const toggleNoTasks = (status) => {
   if (status) renderNoTasks();
   if (status === false) removeNoTasks();
 };
@@ -171,9 +171,8 @@ const handleRemoveTask = (position) => {
 const renderTasks = () => {
   $tasksListWrapper.innerHTML = "";
   for (const index in tasks) {
-    $tasksListWrapper.appendChild(
-      createTask(tasks[index].name, () => handleRemoveTask(index))
-    );
+    const $task = createTask(tasks[index].name, () => handleRemoveTask(index));
+    $tasksListWrapper.appendChild($task);
   }
 };
 

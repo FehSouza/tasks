@@ -182,7 +182,7 @@ body {
   flex-wrap: wrap;
 }
 
-.buttonTaskChecked {
+.checkBox {
   background-color: #373a44;
   width: 22px;
   height: 22px;
